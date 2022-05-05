@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/loginFragment">
 
+    <fragment
+        android:id="@+id/quoteListFragment"
+        android:name="com.example.stockcryptoapp.feature_stock_crypto.presentation.QuoteListFragment"
+        android:label="fragment_quote_list"
+        tools:layout="@layout/fragment_quote_list" >
+        <action
+            android:id="@+id/action_quoteListFragment_to_tickerSearchFragment"
+            app:destination="@id/tickerSearchFragment" />
+        <action
+            android:id="@+id/action_quoteListFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_quoteListFragment_to_tickerDetailFragment"
+            app:destination="@id/tickerDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tickerSearchFragment"
+        android:name="com.example.stockcryptoapp.feature_stock_crypto.presentation.TickerSearchFragment"
+        android:label="fragment_ticker_search"
+        tools:layout="@layout/fragment_ticker_search" >
+        <action
+            android:id="@+id/action_tickerSearchFragment_to_tickerDetailFragment"
+            app:destination="@id/tickerDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tickerDetailFragment"
+        android:name="com.example.stockcryptoapp.feature_stock_crypto.presentation.TickerDetailFragment"
+        android:label="fragment_ticker_detail"
+        tools:layout="@layout/fragment_ticker_detail" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.stockcryptoapp.feature_login.presentation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_quoteListFragment"
+            app:destination="@id/quoteListFragment"
+            app:popUpTo="@id/quoteListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.stockcryptoapp.feature_login.presentation.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_quoteListFragment"
+            app:destination="@id/quoteListFragment"
+            app:popUpTo="@id/quoteListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
