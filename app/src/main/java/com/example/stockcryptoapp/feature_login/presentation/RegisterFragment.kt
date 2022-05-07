@@ -28,10 +28,9 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.apply {
-            registerFragment = this@RegisterFragment
-        }
+        initViews()
     }
+
 
     private fun validPassword(): Pair<Boolean, String?> {
         val password = binding.etPassword.text.toString()
@@ -48,6 +47,17 @@ class RegisterFragment : Fragment() {
 
         return Pair(true, null)
 
+    }
+
+
+    private fun initViews() {
+        binding.btnCancel.setOnClickListener {
+            onCancelButtonPressed()
+        }
+
+        binding.btnRegister.setOnClickListener {
+            navigateToQuoteListFragment()
+        }
     }
 
 
@@ -69,7 +79,6 @@ class RegisterFragment : Fragment() {
 
         }
     }
-
 
     fun onCancelButtonPressed() {
         findNavController().navigateUp()

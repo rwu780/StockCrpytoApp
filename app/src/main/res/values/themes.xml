@@ -44,15 +44,15 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:theme">?theme</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="titleTextAppearance">@style/TextAppearance.StockCryptoApp.Toolbar</item>
+    </style>
+
+    <style name="Widget.StockCryptoApp.Toolbar.EditText" parent="android:Widget.EditText">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="TextAppearance.StockCryptoApp.Toolbar" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="Widget.StockCryptoApp.Backdrop" parent="">
-        <item name="android:background">?attr/colorAccent</item>
+        <item name="titleTextColor">?android:attr/textColorSecondary</item>
     </style>
 
 </resources>

@@ -1,62 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature_stock_crypto.presentation.QuoteListFragment">
 
-    <data>
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/Widget.StockCryptoApp.Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    </data>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/app_bar"
+            style="@style/TextAppearance.StockCryptoApp.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/ic_baseline_menu_24"
+            app:title="@string/app_name" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/quote_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".feature_stock_crypto.presentation.QuoteListFragment">
+        android:layout_marginTop="?attr/actionBarSize"
+        tools:listitem="@layout/quote_list_item"
+        android:clipToPadding="false"
+        />
 
-        <com.google.android.material.appbar.AppBarLayout
-            style="@style/Widget.StockCryptoApp.Toolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+    <Button
+        android:id="@+id/icon_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:contentInsetStart="0dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                app:title="@string/app_name"
-                app:menu="@menu/tool_bar_menu"
-                app:titleTextColor="@color/textColorSecondary"
-                app:navigationIcon="@drawable/ic_baseline_menu_24"
-                />
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <Button
-            android:id="@+id/icon_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="Search" />
-
-        <Button
-            android:id="@+id/icon_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.614"
-            android:text="Quote Detail" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    <Button
+        android:id="@+id/icon_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quote Detail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.614" />
+</androidx.constraintlayout.widget.ConstraintLayout>

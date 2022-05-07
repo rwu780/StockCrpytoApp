@@ -27,9 +27,19 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.apply {
-            loginFragment = this@LoginFragment
+        initViews()
+    }
+
+    private fun initViews() {
+
+        binding.btnLogin.setOnClickListener {
+            navigateToQuoteListFragment()
         }
+
+        binding.btnRegister.setOnClickListener {
+            navigateToRegister()
+        }
+
     }
 
     private fun isUserValid(): Boolean {
@@ -53,4 +63,6 @@ class LoginFragment : Fragment() {
     fun navigateToRegister() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
+
+
 }

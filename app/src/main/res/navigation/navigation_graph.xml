@@ -33,7 +33,16 @@
         android:id="@+id/tickerDetailFragment"
         android:name="com.example.stockcryptoapp.feature_stock_crypto.presentation.TickerDetailFragment"
         android:label="fragment_ticker_detail"
-        tools:layout="@layout/fragment_ticker_detail" />
+        tools:layout="@layout/fragment_ticker_detail" >
+        <action
+            android:id="@+id/action_tickerDetailFragment_to_tickerSearchFragment"
+            app:destination="@id/tickerSearchFragment"
+            app:popUpTo="@id/tickerSearchFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="symbol"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.stockcryptoapp.feature_login.presentation.LoginFragment"

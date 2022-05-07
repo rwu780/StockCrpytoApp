@@ -7,33 +7,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/Widget.StockCryptoApp.Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/app_bar"
+            style="@style/TextAppearance.StockCryptoApp.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_24"
+            app:contentInsetStart="0dp"
+            >
+
+            <EditText
+                android:id="@+id/et_symbol_search"
+                style="@style/Widget.StockCryptoApp.Toolbar.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="12dp"
+                android:maxLines="1"
+                android:inputType="textCapCharacters"
+                tools:text="AAPL"
+                android:textAllCaps="true"
+                />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_result_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Search Fragment" />
-
-    <Button
-        android:id="@+id/icon_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Search"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:clipToPadding="false"
         />
 
-    <Button
-        android:id="@+id/icon_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.614"
-        android:text="Quote Detail"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
