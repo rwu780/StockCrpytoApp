@@ -7,21 +7,34 @@ import com.example.stockcryptoapp.databinding.SearchItemBinding
 import com.example.stockcryptoapp.feature_stock_crypto.domain.model.MatchedResult
 
 class SearchResultAdapter(
+
     private var matchedResults: List<MatchedResult> = emptyList(),
-    val onItemClicked: (MatchedResult) -> Unit
+    private val onItemClicked: (MatchedResult) -> Unit,
+    private val setImageIcon: (MatchedResult) -> Int,
+    private val onButtonClicked: (MatchedResult) -> Int
 
 ) : RecyclerView.Adapter<SearchResultAdapter.Viewholder>() {
 
     class Viewholder(private val binding: SearchItemBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(matchResult:MatchedResult, onItemClicked: (MatchedResult) -> Unit){
+        fun bind(
+            matchResult:MatchedResult,
+            onItemClicked: (MatchedResult) -> Unit,
+            setImageIcon: (MatchedResult) -> Int,
+            onButtonClicked: (MatchedResult) -> Int){
             binding.tvTicker.text = matchResult.ticker
             binding.tvName.text = matchResult.name
+
+            binding.ivIsFavorite.setImageResource(setImageIcon(matchResult))
 
             binding.root.setOnClickListener {
                 onItemClicked(matchResult)
             }
 
+            binding.ivIsFavorite.setOnClickListener {
+                binding.ivIsFavorite.setImageResource(onButtonClicked(matchResult))
+
+            }
         }
     }
 
@@ -37,7 +50,8 @@ class SearchResultAdapter(
 
     override fun onBindViewHolder(holder: Viewholder, position: Int) {
         val dataItem = matchedResults[position]
-        holder.bind(dataItem, onItemClicked)
+        holder.bind(dataItem, onItemClicked, setImageIcon, onButtonClicked)
+
     }
 
     override fun getItemCount(): Int {

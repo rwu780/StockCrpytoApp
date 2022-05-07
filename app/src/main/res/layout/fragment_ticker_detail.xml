@@ -27,7 +27,7 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:padding="14dp"
-                android:src="@drawable/ic_baseline_favorite_border_24"
+                android:src="@drawable/ic_baseline_favorite_border_white"
                 android:layout_gravity="end"
                 />
 

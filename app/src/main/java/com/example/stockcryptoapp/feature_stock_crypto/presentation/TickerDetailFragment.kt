@@ -12,7 +12,6 @@ import com.example.stockcryptoapp.databinding.FragmentTickerDetailBinding
 import com.example.stockcryptoapp.feature_stock_crypto.domain.model.CompanySummary
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val TAG = "TickerDetailFragment"
 
 @AndroidEntryPoint
 class TickerDetailFragment : Fragment() {
@@ -90,7 +89,7 @@ class TickerDetailFragment : Fragment() {
         if (isStockFavorite){
             binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_red)
         } else {
-            binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_white)
         }
     }
 

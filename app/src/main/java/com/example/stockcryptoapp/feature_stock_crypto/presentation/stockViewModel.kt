@@ -8,13 +8,10 @@ import com.example.stockcryptoapp.feature_stock_crypto.domain.model.FavoriateSto
 import com.example.stockcryptoapp.feature_stock_crypto.domain.model.MatchedResult
 import com.example.stockcryptoapp.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val TAG = "stockViewModel"
 
@@ -24,7 +21,7 @@ class StockViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _favoriteStockList = MutableLiveData<MutableList<FavoriateStock>>(mutableListOf())
-    val favoriateStock : LiveData<List<FavoriateStock>> get() = liveData<List<FavoriateStock>> { emit(_favoriteStockList.value ?: emptyList()) }
+    val favoriateStock : LiveData<List<FavoriateStock>> get() = liveData { emit(_favoriteStockList.value ?: emptyList()) }
 
     private val _searchResult = MutableLiveData<List<MatchedResult>>()
     val searchResult: LiveData<List<MatchedResult>> get() = _searchResult
@@ -50,11 +47,9 @@ class StockViewModel @Inject constructor(
     }
 
     fun removeStockFromFavorite(ticker: String){
-        Log.d(TAG, "removeStockFromFavorite: ${ticker}")
-        Log.d(TAG, "removeStockFromFavorite: ${favoriateStock.value}")
+
         val item = _favoriteStockList.value?.find { it.ticker == ticker }
 
-        Log.d(TAG, "removeStockFromFavorite: ${item}")
         _favoriteStockList.value?.remove(item)
 
     }
@@ -72,12 +67,14 @@ class StockViewModel @Inject constructor(
 
         searchJob = viewModelScope.launch {
             repository.searchKeyword(keyword).collectLatest { result ->
-                Log.d(TAG, "searchKeyword: ${result}")
                 when(result){
                     is ResultState.SUCCESS -> {
                         result.data?.let {
                             _searchResult.postValue(it)
                         }
+                    }
+                    is ResultState.LOADING -> {
+                        Log.d(TAG, "searchKeyword: ${result.msg}")
                     }
                     is ResultState.ERROR -> {
                         Log.d(TAG, "searchKeyword: ${result.msg}")
@@ -93,7 +90,6 @@ class StockViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
 
             repository.retrieveCompanyInfo(symbol).collectLatest { result ->
-                Log.d(TAG, "getCompanyOverview: ${result}")
                 when(result){
                     is ResultState.SUCCESS -> {
                         result.data?.let {

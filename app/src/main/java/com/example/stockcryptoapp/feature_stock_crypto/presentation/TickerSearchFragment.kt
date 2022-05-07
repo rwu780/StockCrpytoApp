@@ -6,16 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stockcryptoapp.R
 import com.example.stockcryptoapp.databinding.FragmentTickerSearchBinding
 import com.example.stockcryptoapp.feature_stock_crypto.presentation.adapter.SearchResultAdapter
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class TickerSearchFragment : Fragment() {
@@ -28,7 +27,7 @@ class TickerSearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentTickerSearchBinding.inflate(inflater)
         return binding.root
@@ -36,7 +35,6 @@ class TickerSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         binding.appBar.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -51,13 +49,28 @@ class TickerSearchFragment : Fragment() {
             } else false
         }
 
-//        binding.
+        val adapter = SearchResultAdapter(
+            onItemClicked = {
+                val action = TickerSearchFragmentDirections.actionTickerSearchFragmentToTickerDetailFragment(symbol = it.ticker)
+                findNavController().navigate(action)
+            },
+            setImageIcon = {
+                when (viewModel.isStockFavorite(it.ticker)){
+                    true -> R.drawable.ic_baseline_favorite_red
+                    else -> R.drawable.ic_baseline_favorite_border_dark
+                }
+            },
+            onButtonClicked = {
+                if (viewModel.isStockFavorite(it.ticker)){
+                    viewModel.removeStockFromFavorite(it.ticker)
+                    R.drawable.ic_baseline_favorite_border_dark
+                } else {
+                    viewModel.addStockToFavorite(it.ticker)
+                    R.drawable.ic_baseline_favorite_red
+                }
+            }
+        )
 
-        val adapter = SearchResultAdapter{
-            val action = TickerSearchFragmentDirections.actionTickerSearchFragmentToTickerDetailFragment(symbol = it.ticker)
-            findNavController().navigate(action)
-
-        }
         binding.searchResultRecyclerView.adapter = adapter
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(context)
 
