@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,7 @@ class TickerSearchFragment : Fragment() {
 
     private lateinit var binding: FragmentTickerSearchBinding
 
-    private val viewModel: StockViewModel by viewModels()
+    private val viewModel: StockViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +50,8 @@ class TickerSearchFragment : Fragment() {
                 true
             } else false
         }
+
+//        binding.
 
         val adapter = SearchResultAdapter{
             val action = TickerSearchFragmentDirections.actionTickerSearchFragmentToTickerDetailFragment(symbol = it.ticker)

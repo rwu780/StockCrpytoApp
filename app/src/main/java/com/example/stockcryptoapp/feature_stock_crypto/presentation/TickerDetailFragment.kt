@@ -1,12 +1,10 @@
 package com.example.stockcryptoapp.feature_stock_crypto.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.stockcryptoapp.R
@@ -20,10 +18,12 @@ private const val TAG = "TickerDetailFragment"
 class TickerDetailFragment : Fragment() {
 
     private val navigationArgs: TickerDetailFragmentArgs by navArgs()
-
     private lateinit var binding: FragmentTickerDetailBinding
 
-    private val viewModel: StockViewModel by viewModels()
+    private val viewModel: StockViewModel by activityViewModels()
+
+    private var isStockFavorite: Boolean = false
+    private lateinit var summary: CompanySummary
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class TickerDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTickerDetailBinding.inflate(inflater)
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.appBar)
@@ -45,36 +45,53 @@ class TickerDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val symbol = navigationArgs.symbol
+
+        isStockFavorite = viewModel.isStockFavorite(symbol)
+        updateFavoriteIcon()
+
         viewModel.retrieveCompanyInfo(symbol)
-        viewModel.companyInfo.observe(viewLifecycleOwner) { bindView(it)}
+        viewModel.companyInfo.observe(viewLifecycleOwner) {
+            summary = it
+            bindView()
+        }
 
         binding.appBar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.tool_bar_menu, menu)
-    }
+        binding.ivFavorite.setOnClickListener {
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.search -> {
-                findNavController().navigate(R.id.action_tickerDetailFragment_to_tickerSearchFragment)
-                true
+            if (isStockFavorite){
+                viewModel.removeStockFromFavorite(ticker = symbol)
             }
-            else -> super.onOptionsItemSelected(item)
+            else {
+                viewModel.addStockToFavorite(summary.symbol)
+            }
+
+            isStockFavorite = !isStockFavorite
+            updateFavoriteIcon()
+        }
+
+        binding.ivSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_tickerDetailFragment_to_tickerSearchFragment)
         }
     }
 
-    fun bindView(summary: CompanySummary){
+    private fun bindView(){
 
         binding.tvName.text = summary.name
         binding.tvSymbol.text = summary.symbol
         binding.tvAddress.text = summary.address
         binding.tvDescription.text = summary.description
 
+    }
+
+    private fun updateFavoriteIcon(){
+        if (isStockFavorite){
+            binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_red)
+        } else {
+            binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
     }
 
 
