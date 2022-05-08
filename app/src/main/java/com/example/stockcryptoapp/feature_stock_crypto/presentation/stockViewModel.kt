@@ -18,10 +18,15 @@ private const val TAG = "stockViewModel"
 @HiltViewModel
 class StockViewModel @Inject constructor(
     private val repository: Repository
-): ViewModel() {
+) : ViewModel() {
 
     private val _favoriteStockList = MutableLiveData<MutableList<FavoriateStock>>(mutableListOf())
-    val favoriateStock : LiveData<List<FavoriateStock>> get() = liveData { emit(_favoriteStockList.value ?: emptyList()) }
+    val favoriateStock: LiveData<List<FavoriateStock>>
+        get() = liveData {
+            emit(
+                _favoriteStockList.value ?: emptyList()
+            )
+        }
 
     private val _searchResult = MutableLiveData<List<MatchedResult>>()
     val searchResult: LiveData<List<MatchedResult>> get() = _searchResult
@@ -31,22 +36,26 @@ class StockViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    fun addFavoriateList(list: List<String>){
+    fun addFavoriateList(list: List<String>) {
+
         for (symbol in list)
             addStockToFavorite(ticker = symbol)
     }
 
-    fun addStockToFavorite(ticker: String){
+
+    fun addStockToFavorite(ticker: String) {
 
         viewModelScope.launch {
 
-            _favoriteStockList.value?.add(
-                FavoriateStock(ticker, "Apple", 157.28f, 156.54f, 116120000L, 0.74f, +0.47f)
-            )
+            if (!isStockFavorite(ticker)) {
+                _favoriteStockList.value?.add(
+                    FavoriateStock(ticker, "Apple", 157.28f, 156.54f, 116120000L, 0.74f, +0.47f)
+                )
+            }
         }
     }
 
-    fun removeStockFromFavorite(ticker: String){
+    fun removeStockFromFavorite(ticker: String) {
 
         val item = _favoriteStockList.value?.find { it.ticker == ticker }
 
@@ -54,20 +63,20 @@ class StockViewModel @Inject constructor(
 
     }
 
-    fun isStockFavorite(symbol: String) : Boolean{
+    fun isStockFavorite(symbol: String): Boolean {
 
         return _favoriteStockList.value?.map { it.ticker }?.contains(symbol) ?: false
 
     }
 
-    fun searchKeyword(keyword: String){
+    fun searchKeyword(keyword: String) {
 
         // Remove old jobs
         searchJob?.cancel()
 
         searchJob = viewModelScope.launch {
             repository.searchKeyword(keyword).collectLatest { result ->
-                when(result){
+                when (result) {
                     is ResultState.SUCCESS -> {
                         result.data?.let {
                             _searchResult.postValue(it)
@@ -84,13 +93,13 @@ class StockViewModel @Inject constructor(
         }
     }
 
-    fun retrieveCompanyInfo(symbol: String){
+    fun retrieveCompanyInfo(symbol: String) {
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
 
             repository.retrieveCompanyInfo(symbol).collectLatest { result ->
-                when(result){
+                when (result) {
                     is ResultState.SUCCESS -> {
                         result.data?.let {
                             _companyInfo.postValue(it)

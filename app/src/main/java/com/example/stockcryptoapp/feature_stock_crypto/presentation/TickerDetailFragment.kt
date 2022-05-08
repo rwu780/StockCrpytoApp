@@ -1,5 +1,7 @@
 package com.example.stockcryptoapp.feature_stock_crypto.presentation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -73,6 +75,17 @@ class TickerDetailFragment : Fragment() {
 
         binding.ivSearch.setOnClickListener {
             findNavController().navigate(R.id.action_tickerDetailFragment_to_tickerSearchFragment)
+        }
+
+        binding.tvAddress.setOnClickListener {
+            binding.tvAddress.text?.let { address ->
+                val mapUri = Uri.Builder().scheme("geo").path("0,0")
+                    .appendQueryParameter("q", address.toString())
+
+                val openMapIntent = Intent(Intent.ACTION_VIEW, mapUri.build())
+                startActivity(openMapIntent)
+            }
+
         }
     }
 

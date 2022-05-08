@@ -36,6 +36,7 @@
                 android:inputType="textCapCharacters"
                 tools:text="AAPL"
                 android:textAllCaps="true"
+                android:hint="@string/search_keyword"
                 />
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -48,6 +49,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:clipToPadding="false"
+        tools:listitem="@layout/search_item"
         />
 
 

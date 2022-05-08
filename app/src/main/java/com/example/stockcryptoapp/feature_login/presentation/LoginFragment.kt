@@ -8,11 +8,17 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.stockcryptoapp.R
 import com.example.stockcryptoapp.databinding.FragmentLoginBinding
+import com.example.stockcryptoapp.feature_login.domain.UserManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
+
+    @Inject
+    lateinit var userManager: UserManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +31,9 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.etUserName.text?.clear()
+        binding.etPassword.text?.clear()
+
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
@@ -44,13 +53,17 @@ class LoginFragment : Fragment() {
 
     private fun isUserValid(): Boolean {
         // This function should be replace with Firebase Authorization
-        // If not time, just  leave it as it is
+        // If not enough time, just  leave it as it is
+        val username = binding.etUserName.text.toString()
         val password = binding.etPassword.text.toString()
 
-        return password.isNotBlank() && password.length >= 8
+        val user = userManager.userLogIn(username, password)
+
+        return user != null
     }
 
-    fun navigateToQuoteListFragment () {
+
+    private fun navigateToQuoteListFragment () {
 
         if (isUserValid()){
             binding.passwordTextInput.error = null
@@ -60,7 +73,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun navigateToRegister() {
+    private fun navigateToRegister() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
 

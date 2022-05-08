@@ -17,5 +17,7 @@
     <color name="textColorPrimary">#52646F</color>
     <color name="textColorSecondary">#FAFAFA</color>
     <color name="textInputOutlineColor">#52646F</color>
+    <color name="red">#D50000</color>
+    <color name="green">#00C853</color>
 
 </resources>

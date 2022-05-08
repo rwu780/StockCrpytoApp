@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".feature_stock_crypto.presentation.TickerDetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -47,7 +48,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        >
 
         <TextView
             android:id="@+id/tv_symbol"
@@ -57,6 +59,8 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
             tools:text="AAPL" />
 
         <TextView
@@ -65,30 +69,100 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/tv_symbol"
             app:layout_constraintTop_toBottomOf="@id/tv_symbol"
+            android:textSize="16sp"
             tools:text="Apple" />
 
         <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
-            tools:text="This is the address" />
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_symbol"
+
+            android:layout_marginEnd="40dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:text="100"
+            android:textSize="20sp"
+            android:textColor="@color/red"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="@id/tv_price"
+            app:layout_constraintTop_toBottomOf="@id/tv_price"
+
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:text="-0.3%"
+            android:textSize="12sp"
+            android:textColor="@color/red"
+            />
+
 
         <TextView
             android:id="@+id/tv_industry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_address"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
             tools:text="Computer and Consumer Electric"
-
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="16dp"
+            android:textSize="12sp"
             />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/title_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_industry"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toStartOf="@id/tv_symbol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title_divider"
+            tools:text="This is the address"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/address_divier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_address"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            />
+
+
 
         <TextView
             android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_industry"
+            app:layout_constraintTop_toBottomOf="@id/address_divier"
             tools:text="Company Description"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="16sp"
 
             />
 

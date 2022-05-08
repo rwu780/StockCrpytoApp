@@ -9,4 +9,7 @@
     <string name="incorrect_password">Incorrect Password</string>
     <string name="app_icon">App Icon</string>
     <string name="search_title">Search</string>
+    <string name="menu">Menu</string>
+    <string name="log_out">Log out</string>
+    <string name="search_keyword">Search ....</string>
 </resources>

@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.stockcryptoapp.R
-import com.example.stockcryptoapp.databinding.FragmentLoginBinding
 import com.example.stockcryptoapp.databinding.FragmentRegisterBinding
+import com.example.stockcryptoapp.feature_login.domain.UserManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
+
+    @Inject
+    lateinit var userManager: UserManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +56,14 @@ class RegisterFragment : Fragment() {
 
 
     private fun initViews() {
+        binding.etUserName.text?.clear()
+        binding.etPassword.text?.clear()
+        binding.etRpPassword.text?.clear()
+
         binding.btnCancel.setOnClickListener {
-            onCancelButtonPressed()
+
+            findNavController().navigateUp()
+
         }
 
         binding.btnRegister.setOnClickListener {
@@ -61,13 +72,23 @@ class RegisterFragment : Fragment() {
     }
 
 
-    fun navigateToQuoteListFragment() {
+    private fun navigateToQuoteListFragment() {
 
         if (validPassword().first){
             binding.passwordTextInput.isErrorEnabled = false
             binding.passwordRpTextInput.isErrorEnabled = false
 
-            findNavController().navigate(R.id.action_registerFragment_to_quoteListFragment)
+            val userName = binding.etUserName.text.toString()
+            val password = binding.etPassword.text.toString()
+            if(userManager.isUserExist(userName)){
+                binding.usernameTextInput.isErrorEnabled = true
+                binding.usernameTextInput.error = "User already exists"
+            }
+            else {
+                userManager.registerUser(userName, password)
+                findNavController().navigate(R.id.action_registerFragment_to_quoteListFragment)
+
+            }
         } else {
             val msg = validPassword().second
 
@@ -78,10 +99,5 @@ class RegisterFragment : Fragment() {
             binding.passwordRpTextInput.error = msg
 
         }
-    }
-
-    fun onCancelButtonPressed() {
-        findNavController().navigateUp()
-
     }
 }

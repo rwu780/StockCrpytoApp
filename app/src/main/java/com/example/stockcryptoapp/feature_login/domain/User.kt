@@ -4,6 +4,5 @@ import com.example.stockcryptoapp.feature_stock_crypto.domain.model.FavoriateSto
 
 data class User (
     var username: String,
-    var password: String,
-    var favoriteSymbols: List<String>
+    var favoriteSymbols: Set<String>? = null
 )
