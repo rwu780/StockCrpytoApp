@@ -5,25 +5,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stockcryptoapp.databinding.QuoteListItemBinding
-import com.example.stockcryptoapp.feature_stock_crypto.domain.model.FavoriateStock
+import com.example.stockcryptoapp.feature_stock_crypto.domain.model.Stock
 
 class QuoteListAdapter(
-   private val onItemClick: (FavoriateStock) -> Unit
+   private val onItemClick: (Stock) -> Unit
 
-) : androidx.recyclerview.widget.ListAdapter<FavoriateStock, QuoteListAdapter.ViewHolder>(DiffUtilCallback) {
+) : androidx.recyclerview.widget.ListAdapter<Stock, QuoteListAdapter.ViewHolder>(DiffUtilCallback) {
 
     companion object {
-        private val DiffUtilCallback = object : DiffUtil.ItemCallback<FavoriateStock>(){
+        private val DiffUtilCallback = object : DiffUtil.ItemCallback<Stock>(){
             override fun areItemsTheSame(
-                oldItem: FavoriateStock,
-                newItem: FavoriateStock
+                oldItem: Stock,
+                newItem: Stock
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: FavoriateStock,
-                newItem: FavoriateStock
+                oldItem: Stock,
+                newItem: Stock
             ): Boolean {
                 return oldItem.ticker == newItem.ticker
             }
@@ -34,11 +34,20 @@ class QuoteListAdapter(
 
     class ViewHolder(private val binding: QuoteListItemBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(dataItem: FavoriateStock, onItemClick: (FavoriateStock) -> Unit){
+        fun bind(dataItem: Stock, onItemClick: (Stock) -> Unit){
             binding.tvTicker.text = dataItem.ticker
             binding.tvName.text = dataItem.name
-            binding.tvChange.text = dataItem.changePercent.toString()
-            binding.tvPrice.text = dataItem.currentPrice.toString()
+            binding.tvChange.text = dataItem.changePercent
+            binding.tvPrice.text = dataItem.currentPrice
+
+            binding.tvChange.setOnClickListener {
+                if (binding.tvChange.text == dataItem.changePercent){
+                    binding.tvChange.text = dataItem.change
+                }
+                else {
+                    binding.tvChange.text = dataItem.changePercent
+                }
+            }
 
             binding.root.setOnClickListener {
                 onItemClick(dataItem)

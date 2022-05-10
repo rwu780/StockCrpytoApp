@@ -1,6 +1,7 @@
 package com.example.stockcryptoapp.feature_stock_crypto.data.remote
 
 import com.example.stockcryptoapp.BuildConfig
+import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.QuoteResponse
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.ResponseCompanySummary
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.ResponseMatchedTicker
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.SearchTickerResponse
@@ -14,7 +15,7 @@ interface AlphtAdvantageApi {
         @Query("keywords") keyword: String,
         @Query("function") function: String = SEARCH_SYMBOL,
         @Query("datatype") dataType: String = DATA_TYPE,
-        @Query("apikey") apikey: String = API_KEY
+        @Query("apikey") apikey: String = API_KEY2
     ) : SearchTickerResponse
 
     @GET(END_POINT_QUERY)
@@ -25,18 +26,18 @@ interface AlphtAdvantageApi {
     ) : ResponseCompanySummary
 
     @GET(END_POINT_QUERY)
-    fun getQuote(
+    suspend fun getQuote(
         @Query("symbol") symbol: String,
         @Query("function") function: String = RETRIEVE_QUOTE,
-        @Query("apikey") apikey: String = API_KEY
-    )
+        @Query("apikey") apikey: String = API_KEY1
+    ) : QuoteResponse
 
-    @GET(END_POINT_QUERY)
-    fun getActiveTicker(
-        @Query("function") function: String = LISTING_STATUS,
-        @Query("state") state: String = "active",
-        @Query("apikey") apiKey: String = API_KEY
-    )
+//    @GET(END_POINT_QUERY)
+//    fun getActiveTicker(
+//        @Query("function") function: String = LISTING_STATUS,
+//        @Query("state") state: String = "active",
+//        @Query("apikey") apiKey: String = API_KEY
+//    )
 
     companion object {
 
@@ -52,7 +53,8 @@ interface AlphtAdvantageApi {
         private const val DATA_TYPE = "json"
 
         private const val API_KEY = BuildConfig.ALPHA_VANTAGE_API_KEY
-
+        private const val API_KEY1 = BuildConfig.ALPHA_VANTAGE_API_KEY1
+        private const val API_KEY2 = BuildConfig.ALPHA_VANTAGE_API_KEY2
 
     }
 }

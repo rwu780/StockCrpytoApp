@@ -9,7 +9,7 @@ class UserManager @Inject constructor(
 ) {
 
     private var user: User? = null
-    private val defaultMutableSet: MutableSet<String> = mutableSetOf("AAPL", "MSFT", "GOOG","FB", "TSLA", "SQ", "NET", "PYPL", "AMD", "NVDA")
+    private val defaultMutableSet: MutableSet<String> = mutableSetOf()
 
     fun userLogIn(username: String, password: String): User? {
 

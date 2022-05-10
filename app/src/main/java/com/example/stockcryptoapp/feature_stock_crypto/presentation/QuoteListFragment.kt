@@ -2,7 +2,7 @@ package com.example.stockcryptoapp.feature_stock_crypto.presentation
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,8 +25,6 @@ class QuoteListFragment : Fragment() {
     @Inject
     lateinit var userManager: UserManager
 
-    private lateinit var toggle: ActionBarDrawerToggle
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -34,7 +32,9 @@ class QuoteListFragment : Fragment() {
         if (!userManager.isUserLoggedIn()){
             findNavController().navigate(R.id.action_quoteListFragment_to_loginFragment)
         } else {
-            viewModel.addFavoriateList(userManager.retrieveUserFavorite().toList())
+            viewModel.addFavoriateList(userManager.retrieveUserFavorite().toList()){
+                Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
@@ -85,7 +85,7 @@ class QuoteListFragment : Fragment() {
         binding.quoteListRecyclerView.adapter = adapter
         binding.quoteListRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        viewModel.favoriateStock.observe(viewLifecycleOwner) { favoriateStocks ->
+        viewModel.stock.observe(viewLifecycleOwner) { favoriateStocks ->
             adapter.submitList(favoriateStocks)
             userManager.updateUserFavoriate(favoriateStocks.map { it.ticker }.toSet())
         }

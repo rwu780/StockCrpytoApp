@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -50,10 +51,18 @@ class TickerDetailFragment : Fragment() {
         isStockFavorite = viewModel.isStockFavorite(symbol)
         updateFavoriteIcon()
 
-        viewModel.retrieveCompanyInfo(symbol)
+        viewModel.retrieveSymbolInfo(symbol){
+            Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
+        }
+
         viewModel.companyInfo.observe(viewLifecycleOwner) {
             summary = it
             bindView()
+        }
+
+        viewModel.currentStock.observe(viewLifecycleOwner) {
+            binding.tvPrice.text = it.currentPrice
+            binding.tvChange.text = it.changePercent
         }
 
         binding.appBar.setNavigationOnClickListener {
@@ -66,7 +75,9 @@ class TickerDetailFragment : Fragment() {
                 viewModel.removeStockFromFavorite(ticker = symbol)
             }
             else {
-                viewModel.addStockToFavorite(summary.symbol)
+                viewModel.addStockToFavorite(summary.symbol){
+                    Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
+                }
             }
 
             isStockFavorite = !isStockFavorite

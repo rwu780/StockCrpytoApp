@@ -24,7 +24,7 @@
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_quote_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_ticker_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_ticker_detail.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_ticker_search.xml" value="0.335" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/quote_list_item.xml" value="0.1" />

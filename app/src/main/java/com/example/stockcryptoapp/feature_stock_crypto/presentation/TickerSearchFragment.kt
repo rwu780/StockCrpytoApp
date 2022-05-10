@@ -43,7 +43,7 @@ class TickerSearchFragment : Fragment() {
         binding.etSymbolSearch.setOnKeyListener { _, keyCode, keyEvent ->
             if ((keyEvent.action == KeyEvent.ACTION_DOWN) &&
                 (keyCode == KeyEvent.KEYCODE_ENTER)){
-                Toast.makeText(context, "Enter pressed", Toast.LENGTH_SHORT).show()
+
                 viewModel.searchKeyword(binding.etSymbolSearch.text.toString())
                 true
             } else false
@@ -65,7 +65,9 @@ class TickerSearchFragment : Fragment() {
                     viewModel.removeStockFromFavorite(it.ticker)
                     R.drawable.ic_baseline_favorite_border_dark
                 } else {
-                    viewModel.addStockToFavorite(it.ticker)
+                    viewModel.addStockToFavorite(it.ticker){
+                        Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
+                    }
                     R.drawable.ic_baseline_favorite_red
                 }
             }

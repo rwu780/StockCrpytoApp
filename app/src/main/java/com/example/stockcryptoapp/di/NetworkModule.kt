@@ -1,6 +1,7 @@
 package com.example.stockcryptoapp.di
 
 import com.example.stockcryptoapp.feature_stock_crypto.data.RepositoryImpl
+import com.example.stockcryptoapp.feature_stock_crypto.data.local.StockDao
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.AlphtAdvantageApi
 import com.example.stockcryptoapp.feature_stock_crypto.domain.Repository
 import com.squareup.moshi.Moshi
@@ -31,7 +32,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRepository(api: AlphtAdvantageApi): Repository {
-        return RepositoryImpl(api)
+    fun provideRepository(api: AlphtAdvantageApi, stockDao: StockDao): Repository {
+        return RepositoryImpl(api, stockDao)
     }
 }

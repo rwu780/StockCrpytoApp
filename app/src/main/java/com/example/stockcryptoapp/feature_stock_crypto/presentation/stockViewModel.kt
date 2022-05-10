@@ -4,13 +4,12 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.stockcryptoapp.feature_stock_crypto.domain.Repository
 import com.example.stockcryptoapp.feature_stock_crypto.domain.model.CompanySummary
-import com.example.stockcryptoapp.feature_stock_crypto.domain.model.FavoriateStock
+import com.example.stockcryptoapp.feature_stock_crypto.domain.model.Stock
 import com.example.stockcryptoapp.feature_stock_crypto.domain.model.MatchedResult
 import com.example.stockcryptoapp.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "stockViewModel"
@@ -20,13 +19,16 @@ class StockViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _favoriteStockList = MutableLiveData<MutableList<FavoriateStock>>(mutableListOf())
-    val favoriateStock: LiveData<List<FavoriateStock>>
+    private val _favoriteStockList = MutableLiveData<MutableList<Stock>>()
+    val stock: LiveData<List<Stock>>
         get() = liveData {
             emit(
                 _favoriteStockList.value ?: emptyList()
             )
         }
+
+    private val _currentStock = MutableLiveData<Stock>()
+    val currentStock: LiveData<Stock> get() = _currentStock
 
     private val _searchResult = MutableLiveData<List<MatchedResult>>()
     val searchResult: LiveData<List<MatchedResult>> get() = _searchResult
@@ -34,23 +36,59 @@ class StockViewModel @Inject constructor(
     private val _companyInfo = MutableLiveData<CompanySummary>()
     val companyInfo: LiveData<CompanySummary> get() = _companyInfo
 
+
     private var searchJob: Job? = null
 
-    fun addFavoriateList(list: List<String>) {
-
-        for (symbol in list)
-            addStockToFavorite(ticker = symbol)
-    }
-
-
-    fun addStockToFavorite(ticker: String) {
-
+    fun addFavoriateList(list: List<String>, errorMsg: () -> Unit) {
         viewModelScope.launch {
 
-            if (!isStockFavorite(ticker)) {
-                _favoriteStockList.value?.add(
-                    FavoriateStock(ticker, "Apple", 157.28f, 156.54f, 116120000L, 0.74f, +0.47f)
-                )
+            withContext(Dispatchers.IO) {
+
+                val jobs = list.map {
+                    async { repository.retrieveQuoteInfo(symbol = it) }
+                }.awaitAll()
+
+                val stockList = mutableListOf<Stock>()
+                for (job in jobs) {
+                    job.collectLatest { result ->
+                        when (result) {
+                            is ResultState.SUCCESS -> {
+                                result.data?.let {
+                                    stockList.add(it)
+                                }
+
+                            }
+                        }
+                    }
+                }
+                _favoriteStockList.postValue(stockList)
+            }
+        }
+    }
+
+    fun addStockToFavorite(ticker: String, errorMsg: () -> Unit) {
+
+        if (!isStockFavorite(ticker)) {
+            viewModelScope.launch {
+                repository.retrieveQuoteInfo(ticker).collect { result ->
+                    when (result) {
+                        is ResultState.SUCCESS -> {
+                            result.data?.let {
+                                Log.d(TAG, "addStockToFavorite: ${it}")
+                                _favoriteStockList.value?.add(it)
+                            }
+                        }
+                        is ResultState.ERROR -> {
+                            result.data?.let {
+                                _favoriteStockList.value?.add(it)
+                            } ?: run{ errorMsg() }
+                        }
+                        else -> {
+                            Log.d(TAG, "addStockToFavorite: ${result.msg}")
+
+                        }
+                    }
+                }
             }
         }
     }
@@ -93,31 +131,61 @@ class StockViewModel @Inject constructor(
         }
     }
 
-    fun retrieveCompanyInfo(symbol: String) {
+    fun retrieveSymbolInfo(symbol: String, errorMsg: () -> Unit) {
 
         searchJob?.cancel()
-        searchJob = viewModelScope.launch {
 
-            repository.retrieveCompanyInfo(symbol).collectLatest { result ->
-                when (result) {
-                    is ResultState.SUCCESS -> {
-                        result.data?.let {
-                            _companyInfo.postValue(it)
-                        }
+        searchJob = viewModelScope.launch {
+            retrieveStockInfo(symbol, errorMsg)
+            retrieveCompanyInfo(symbol)
+        }
+
+
+    }
+
+    suspend fun retrieveStockInfo(symbol: String, errorMsg: () -> Unit) {
+
+        repository.retrieveQuoteInfo(symbol).collectLatest { result ->
+            when (result) {
+                is ResultState.SUCCESS -> {
+                    result.data?.let {
+                        _currentStock.postValue(it)
                     }
-                    is ResultState.LOADING -> {
-                        result.data?.let {
-                            _companyInfo.postValue(it)
-                        }
+                }
+                is ResultState.ERROR -> {
+                    result.data?.let {
+                        _currentStock.postValue(it)
+                    } ?: kotlin.run { errorMsg() }
+                }
+            }
+        }
+
+
+    }
+
+    suspend fun retrieveCompanyInfo(symbol: String) {
+
+
+        repository.retrieveCompanyInfo(symbol).collectLatest { result ->
+            when (result) {
+                is ResultState.SUCCESS -> {
+                    result.data?.let {
+                        _companyInfo.postValue(it)
                     }
-                    is ResultState.ERROR -> {
-                        Log.d(TAG, "getCompanyOverview: ${result.msg}")
-                        result.data?.let {
-                            _companyInfo.postValue(it)
-                        }
+                }
+                is ResultState.LOADING -> {
+                    result.data?.let {
+                        _companyInfo.postValue(it)
+                    }
+                }
+                is ResultState.ERROR -> {
+                    Log.d(TAG, "getCompanyOverview: ${result.msg}")
+                    result.data?.let {
+                        _companyInfo.postValue(it)
                     }
                 }
             }
         }
+
     }
 }
