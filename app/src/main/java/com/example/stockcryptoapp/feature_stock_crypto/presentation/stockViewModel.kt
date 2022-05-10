@@ -20,12 +20,12 @@ class StockViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _favoriteStockList = MutableLiveData<MutableList<Stock>>()
-    val stock: LiveData<List<Stock>>
-        get() = liveData {
-            emit(
-                _favoriteStockList.value ?: emptyList()
-            )
-        }
+    val stock: LiveData<MutableList<Stock>> = _favoriteStockList
+//        get() = liveData {
+//            emit(
+//                _favoriteStockList.value ?: emptyList()
+//            )
+//        }
 
     private val _currentStock = MutableLiveData<Stock>()
     val currentStock: LiveData<Stock> get() = _currentStock
@@ -45,12 +45,15 @@ class StockViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
 
                 val jobs = list.map {
+                    Log.d(TAG, "addFavoriateList: Running Async ${it}")
                     async { repository.retrieveQuoteInfo(symbol = it) }
                 }.awaitAll()
 
+                Log.d(TAG, "addFavoriateList: Finish")
                 val stockList = mutableListOf<Stock>()
                 for (job in jobs) {
                     job.collectLatest { result ->
+                        Log.d(TAG, "addFavoriateList: ${job} ${result.data}")
                         when (result) {
                             is ResultState.SUCCESS -> {
                                 result.data?.let {
