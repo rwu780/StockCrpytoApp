@@ -7,17 +7,17 @@ import com.squareup.moshi.JsonClass
 
 data class ResponseCompanySummary(
     @Json(name = "Address")
-    val address: String,
+    val address: String?,
     @Json(name = "AssetType")
     val assetType: String,
     @Json(name = "Description")
-    val description: String,
+    val description: String?,
     @Json(name = "Industry")
-    val industry: String,
+    val industry: String?,
     @Json(name = "Name")
-    val name: String,
+    val name: String?,
     @Json(name = "Sector")
-    val sector: String,
+    val sector: String?,
     @Json(name = "Symbol")
     val symbol: String
 ) {
@@ -25,10 +25,10 @@ data class ResponseCompanySummary(
     fun toUICompanySummary() : CompanySummary {
         return CompanySummary(
             symbol = symbol,
-            name = name,
-            description = description,
-            industry = industry,
-            address = address
+            name = name ?: "No available value",
+            description = description ?: "No available value",
+            industry = industry ?: "No available value",
+            address = address ?: "No available value"
         )
     }
 }

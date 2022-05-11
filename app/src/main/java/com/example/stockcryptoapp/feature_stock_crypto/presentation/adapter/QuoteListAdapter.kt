@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stockcryptoapp.databinding.QuoteListItemBinding
 import com.example.stockcryptoapp.feature_stock_crypto.domain.model.Stock
+import com.google.android.material.textview.MaterialTextView
+
 
 class QuoteListAdapter(
-   private val onItemClick: (Stock) -> Unit
+    private val onItemClick: (Stock) -> Unit,
+    private val setTextColor: (Stock, MaterialTextView) -> Unit
 
 ) : androidx.recyclerview.widget.ListAdapter<Stock, QuoteListAdapter.ViewHolder>(DiffUtilCallback) {
 
@@ -34,11 +37,14 @@ class QuoteListAdapter(
 
     class ViewHolder(private val binding: QuoteListItemBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(dataItem: Stock, onItemClick: (Stock) -> Unit){
+        fun bind(dataItem: Stock, onItemClick: (Stock) -> Unit, setTextColor: (Stock, MaterialTextView) -> Unit){
             binding.tvTicker.text = dataItem.ticker
             binding.tvName.text = dataItem.name
             binding.tvChange.text = dataItem.changePercent
             binding.tvPrice.text = dataItem.currentPrice
+
+            setTextColor(dataItem, binding.tvChange)
+
 
             binding.tvChange.setOnClickListener {
                 if (binding.tvChange.text == dataItem.changePercent){
@@ -64,7 +70,7 @@ class QuoteListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dataItem = getItem(position)
-        holder.bind(dataItem, onItemClick)
+        holder.bind(dataItem, onItemClick, setTextColor)
     }
 
 

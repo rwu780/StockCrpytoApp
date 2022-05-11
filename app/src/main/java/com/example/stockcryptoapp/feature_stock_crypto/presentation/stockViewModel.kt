@@ -158,7 +158,9 @@ class StockViewModel @Inject constructor(
                 is ResultState.ERROR -> {
                     result.data?.let {
                         _currentStock.postValue(it)
-                    } ?: kotlin.run { errorMsg() }
+                    } ?: kotlin.run {
+                        _currentStock.postValue(Stock(symbol, "No Data available"))
+                    }
                 }
             }
         }
@@ -185,6 +187,10 @@ class StockViewModel @Inject constructor(
                     Log.d(TAG, "getCompanyOverview: ${result.msg}")
                     result.data?.let {
                         _companyInfo.postValue(it)
+                    } ?: run {
+                        _companyInfo.postValue(
+                            CompanySummary(symbol, "No Data Available", "", "", "")
+                        )
                     }
                 }
             }

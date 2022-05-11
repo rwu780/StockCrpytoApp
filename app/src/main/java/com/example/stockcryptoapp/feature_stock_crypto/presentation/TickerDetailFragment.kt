@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -51,7 +52,7 @@ class TickerDetailFragment : Fragment() {
         isStockFavorite = viewModel.isStockFavorite(symbol)
         updateFavoriteIcon()
 
-        viewModel.retrieveSymbolInfo(symbol){
+        viewModel.retrieveSymbolInfo(symbol) {
             Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
         }
 
@@ -61,6 +62,23 @@ class TickerDetailFragment : Fragment() {
         }
 
         viewModel.currentStock.observe(viewLifecycleOwner) {
+            if (it.change.toFloat() < 0) {
+                binding.tvPrice.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.red)
+                )
+
+                binding.tvChange.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.red)
+                )
+            } else {
+                binding.tvPrice.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.green)
+                )
+
+                binding.tvChange.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.green)
+                )
+            }
             binding.tvPrice.text = it.currentPrice
             binding.tvChange.text = it.changePercent
         }
@@ -71,11 +89,10 @@ class TickerDetailFragment : Fragment() {
 
         binding.ivFavorite.setOnClickListener {
 
-            if (isStockFavorite){
+            if (isStockFavorite) {
                 viewModel.removeStockFromFavorite(ticker = symbol)
-            }
-            else {
-                viewModel.addStockToFavorite(summary.symbol){
+            } else {
+                viewModel.addStockToFavorite(summary.symbol) {
                     Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -100,7 +117,7 @@ class TickerDetailFragment : Fragment() {
         }
     }
 
-    private fun bindView(){
+    private fun bindView() {
 
         binding.tvName.text = summary.name
         binding.tvSymbol.text = summary.symbol
@@ -109,8 +126,8 @@ class TickerDetailFragment : Fragment() {
 
     }
 
-    private fun updateFavoriteIcon(){
-        if (isStockFavorite){
+    private fun updateFavoriteIcon() {
+        if (isStockFavorite) {
             binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_red)
         } else {
             binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_white)

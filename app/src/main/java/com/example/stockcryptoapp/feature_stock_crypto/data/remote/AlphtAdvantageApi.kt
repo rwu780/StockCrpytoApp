@@ -16,21 +16,21 @@ interface AlphtAdvantageApi {
         @Query("function") function: String = SEARCH_SYMBOL,
         @Query("datatype") dataType: String = DATA_TYPE,
         @Query("apikey") apikey: String = API_KEY2
-    ) : SearchTickerResponse
+    ): SearchTickerResponse
 
     @GET(END_POINT_QUERY)
     suspend fun retrieveCompanyOverview(
         @Query("symbol") symbol: String,
         @Query("function") function: String = COMPANY_OVERVIEW,
         @Query("apikey") apikey: String = API_KEY
-    ) : ResponseCompanySummary
+    ): ResponseCompanySummary
 
     @GET(END_POINT_QUERY)
     suspend fun getQuote(
         @Query("symbol") symbol: String,
         @Query("function") function: String = RETRIEVE_QUOTE,
         @Query("apikey") apikey: String = API_KEY1
-    ) : QuoteResponse
+    ): QuoteResponse
 
 //    @GET(END_POINT_QUERY)
 //    fun getActiveTicker(
@@ -52,9 +52,14 @@ interface AlphtAdvantageApi {
 
         private const val DATA_TYPE = "json"
 
-        private const val API_KEY = BuildConfig.ALPHA_VANTAGE_API_KEY
-        private const val API_KEY1 = BuildConfig.ALPHA_VANTAGE_API_KEY1
-        private const val API_KEY2 = BuildConfig.ALPHA_VANTAGE_API_KEY2
+
+//        private const val API_KEY = BuildConfig.ALPHA_VANTAGE_API_KEY
+//        private const val API_KEY1 = BuildConfig.ALPHA_VANTAGE_API_KEY1
+//        private const val API_KEY2 = BuildConfig.ALPHA_VANTAGE_API_KEY2
+
+        private const val API_KEY = "CPY3KJPBCXYIEIXP"
+        private const val API_KEY1 = "8JB3PLIG5RMO8VLK"
+        private const val API_KEY2 = "FP2PBACHA0I3FA7A"
 
     }
 }

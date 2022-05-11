@@ -12,4 +12,6 @@
     <string name="menu">Menu</string>
     <string name="log_out">Log out</string>
     <string name="search_keyword">Search ....</string>
+    <string name="no_symbol_in_list">No Symbol in List</string>
+    <string name="no_search_result">No search result</string>
 </resources>

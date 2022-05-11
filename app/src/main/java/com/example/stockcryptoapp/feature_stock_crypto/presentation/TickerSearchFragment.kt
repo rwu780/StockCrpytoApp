@@ -36,6 +36,8 @@ class TickerSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tvNoSearchResult.text = "No search result"
+
         binding.appBar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
@@ -77,7 +79,13 @@ class TickerSearchFragment : Fragment() {
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(context)
 
         viewModel.searchResult.observe(viewLifecycleOwner){
-            adapter.updateResultList(it)
+            if (it.size == 0){
+                binding.tvNoSearchResult.text = "Unable to fetch result, please try again"
+            }else {
+                binding.tvNoSearchResult.text = ""
+                adapter.updateResultList(it)
+            }
+
         }
     }
 }
