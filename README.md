@@ -5,7 +5,6 @@ Notes: The current API usage limit is 5 calls/minutes
 
 If you see no data/data unavailable/error fetching data, most likely it exceed the limit.
 
-API key not uploaded to github, if download and run, the app will fail
 
 
 
