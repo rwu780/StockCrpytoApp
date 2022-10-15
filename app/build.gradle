@@ -6,9 +6,6 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-def apikeyPropertiesFile = rootProject.file("apikey.properties")
-def apikeyProperties = new Properties()
-apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
     compileSdk 32
@@ -22,10 +19,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // should correspond to key/value pairs inside the file
-        buildConfigField("String", "ALPHA_VANTAGE_API_KEY", apikeyProperties['ALPHA_VANTAGE_API_KEY'])
-        buildConfigField("String", "ALPHA_VANTAGE_API_KEY1", apikeyProperties['ALPHA_VANTAGE_API_KEY1'])
-        buildConfigField("String", "ALPHA_VANTAGE_API_KEY2", apikeyProperties['ALPHA_VANTAGE_API_KEY2'])
+
     }
 
     buildTypes {

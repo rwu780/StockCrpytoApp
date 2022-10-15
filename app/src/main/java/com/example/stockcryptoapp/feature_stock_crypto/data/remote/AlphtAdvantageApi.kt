@@ -1,9 +1,7 @@
 package com.example.stockcryptoapp.feature_stock_crypto.data.remote
 
-import com.example.stockcryptoapp.BuildConfig
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.QuoteResponse
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.ResponseCompanySummary
-import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.ResponseMatchedTicker
 import com.example.stockcryptoapp.feature_stock_crypto.data.remote.responseObject.SearchTickerResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
