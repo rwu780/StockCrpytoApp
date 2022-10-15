@@ -1,5 +1,13 @@
 # StockCrpytoApp
 
+<img src="images/Screenshot_20221014_190850.png" alt="drawing" width="300"/>
+<img src="images/Screenshot_20221014_190913.png" alt="drawing" width="300"/>
+<img src="images/Screenshot_20221014_190932.png" alt="drawing" width="300"/>
+<img src="images/Screenshot_20221014_190953.png" alt="drawing" width="300"/>
+<img src="images/Screenshot_20221014_191007.png" alt="drawing" width="300"/>
+<img src="images/Screenshot_20221014_191031.png" alt="drawing" width="300"/>
+<img src="images/Screenshot_20221014_191040.png" alt="drawing" width="300"/>
+
 
 Notes: The current API usage limit is 5 calls/minutes
 
